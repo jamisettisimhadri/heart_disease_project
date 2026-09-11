@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .label-icon {
+            font-size: 16px;
+        }
+
+        input[type="number"] {
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="number"]::placeholder {
+            color: #999;
+        }
+
+        button[type="submit"] {
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-container h2 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .header-icon {
+                font-size: 40px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+
+            input[type="number"] {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+
+            button[type="submit"] {
+                padding: 14px 20px;
+                font-size: 15px;
+            }
+
+            .result-container h2 {
+                font-size: 20px;
+            }
+        }
+
+        /* Accessibility */
+        input[type="number"]:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .header-icon {
+                animation: none;
+            }
+
+            .result-container {
+                animation: none;
+            }
+
+            input[type="number"],
+            button[type="submit"] {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">❤️</div>
+            <h1>Heart Health Check</h1>
+            <p>Predict your heart disease risk</p>
+        </div>
+
+        <div class="form-container">
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="age">
+                        <span class="label-icon">📅</span>
+                        Age
+                    </label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        placeholder="Enter your age"
+                        min="0"
+                        max="150"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="blood_pressure">
+                        <span class="label-icon">🩸</span>
+                        Blood Pressure
+                    </label>
+                    <input
+                        type="number"
+                        id="blood_pressure"
+                        name="blood_pressure"
+                        placeholder="e.g., 120"
+                        min="0"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="cholesterol">
+                        <span class="label-icon">⚗️</span>
+                        Cholesterol
+                    </label>
+                    <input
+                        type="number"
+                        id="cholesterol"
+                        name="cholesterol"
+                        placeholder="e.g., 200"
+                        min="0"
+                        required
+                    >
+                </div>
+
+                <button type="submit">
+                    🔍 Predict Risk
+                </button>
+            </form>
+
+            {% if prediction %}
+                <div class="result-container">
+                    <h2>{{ prediction }}</h2>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
